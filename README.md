@@ -10,10 +10,12 @@ Gitship is an AI-powered web application that automatically generates production
 
 > 🏆 Built for **[OpenAI Build Week](https://openai.devpost.com/)** — Developer Tools track.
 
+**Note on AI usage:** Gitship's *runtime* Dockerfile generation is powered by the Groq API. The *project itself* — its codebase, architecture, and features — was built with the help of **Codex and GPT-5.6**, as detailed below.
+
 ## 🤖 How Codex & GPT-5.6 Were Used
 
 - **Codex** — [describe here: e.g. which parts of Gitship's codebase Codex generated or accelerated, such as the FastAPI backend scaffolding, the WebSocket streaming logic, or the Dockerfile-generation prompt engineering]
-- **GPT-5.6** — [describe here: e.g. how GPT-5.6 is used at runtime to analyze repository structure and generate the Dockerfile itself]
+- **GPT-5.6** — [describe here: e.g. what GPT-5.6 was used for during development — planning the architecture, writing prompts, debugging, reviewing code]
 - **Key decisions made with Codex's help** — [describe here: e.g. choosing the multi-stage build strategy, structuring the `tools/` module, or debugging the gitingest integration]
 - **/feedback Codex Session ID:** `[paste your session ID here]`
 
