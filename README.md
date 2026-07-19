@@ -1,4 +1,3 @@
-![Gitship](docs/image.png)
 
 # Gitship 🐳
 
