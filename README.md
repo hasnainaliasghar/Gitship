@@ -1,4 +1,3 @@
-
 # Gitship 🐳
 
 **Turn any GitHub repository into a production-ready Docker container with AI-powered Dockerfile generation.**
@@ -7,19 +6,27 @@
 [![Python 3.9+](https://img.shields.io/badge/python-3.9+-blue.svg)](https://www.python.org/downloads/)
 [![FastAPI](https://img.shields.io/badge/FastAPI-0.68+-00a393.svg)](https://fastapi.tiangolo.com/)
 
-Gitship is an AI-powered web application that automatically generates production-ready Dockerfiles by analyzing GitHub repositories. Simply paste a GitHub URL and get a tailored Dockerfile with intelligent base image selection, dependency management, and Docker best practices.
+Gitship is an AI-powered web application that automatically generates production-ready Dockerfiles by analyzing GitHub repositories. Paste in a GitHub URL and get a tailored Dockerfile back, complete with intelligent base image selection, dependency management, and Docker best practices.
 
+> 🏆 Built for **[OpenAI Build Week](https://openai.devpost.com/)** — Developer Tools track.
+
+## 🤖 How Codex & GPT-5.6 Were Used
+
+- **Codex** — [describe here: e.g. which parts of Gitship's codebase Codex generated or accelerated, such as the FastAPI backend scaffolding, the WebSocket streaming logic, or the Dockerfile-generation prompt engineering]
+- **GPT-5.6** — [describe here: e.g. how GPT-5.6 is used at runtime to analyze repository structure and generate the Dockerfile itself]
+- **Key decisions made with Codex's help** — [describe here: e.g. choosing the multi-stage build strategy, structuring the `tools/` module, or debugging the gitingest integration]
+- **/feedback Codex Session ID:** `[paste your session ID here]`
 
 ## ✨ Features
 
-- **🤖 AI-Powered Analysis**: Uses OpenAI GPT-4 to analyze repository structure and generate intelligent Dockerfiles
-- **⚡ Real-time Streaming**: Watch the AI generate your Dockerfile in real-time with WebSocket streaming
-- **🎯 Smart Detection**: Automatically detects technology stacks (Python, Node.js, Java, Go, etc.)
-- **🔧 Production-Ready**: Generates Dockerfiles following best practices with proper security, multi-stage builds, and optimization
-- **📋 Additional Instructions**: Add custom requirements for specialized environments
-- **📄 Docker Compose**: Automatically suggests docker-compose.yml for complex applications
-- **🎨 Modern UI**: Clean, responsive interface with Monaco editor for syntax highlighting
-- **📱 Mobile Friendly**: Works seamlessly on desktop and mobile devices
+- **🤖 AI-Powered Analysis** — Uses Groq's Llama models to analyze repository structure and generate intelligent Dockerfiles
+- **⚡ Real-time Streaming** — Watch the AI generate your Dockerfile live via WebSocket streaming
+- **🎯 Smart Detection** — Automatically detects technology stacks (Python, Node.js, Java, Go, etc.)
+- **🔧 Production-Ready Output** — Generates Dockerfiles following best practices: proper security, multi-stage builds, and optimization
+- **📋 Custom Instructions** — Add your own requirements for specialized environments
+- **📄 Docker Compose Support** — Automatically suggests a `docker-compose.yml` for multi-service applications
+- **🎨 Modern UI** — Clean, responsive interface with Monaco editor for syntax highlighting
+- **📱 Mobile Friendly** — Works seamlessly on desktop and mobile
 
 ## 🚀 Quick Start
 
@@ -27,7 +34,7 @@ Gitship is an AI-powered web application that automatically generates production
 
 - Python 3.9 or higher
 - Git
-- Groq API key
+- A Groq API key ([console.groq.com](https://console.groq.com/))
 
 ### Installation
 
@@ -59,14 +66,14 @@ Gitship is an AI-powered web application that automatically generates production
 
 ## 🛠️ How It Works
 
-1. **Repository Cloning**: Gitship clones the GitHub repository locally using Git
-3. **Code Analysis**: Uses [gitingest](https://github.com/cyclotruc/gitingest) to analyze the repository structure and extract relevant information
-4. **AI Generation**: Sends the analysis to OpenAI GPT-4 with specialized prompts for Dockerfile generation
-5. **Smart Optimization**: The AI considers:
+1. **Repository Cloning** — Gitship clones the target GitHub repository locally using Git
+2. **Code Analysis** — Uses [gitingest](https://github.com/cyclotruc/gitingest) to analyze repository structure and extract relevant context
+3. **AI Generation** — Sends the analysis to Groq's API with specialized prompts for Dockerfile generation
+4. **Smart Optimization** — The AI considers:
    - Technology stack detection
    - Dependency management
    - Security best practices
-   - Multi-stage builds when beneficial
+   - Multi-stage builds where beneficial
    - Port configuration
    - Environment variables
    - Health checks
@@ -74,33 +81,34 @@ Gitship is an AI-powered web application that automatically generates production
 ## 📁 Project Structure
 
 ```
-cyclotruc-gitship/
+Gitship/
 ├── app.py                 # Main FastAPI application
 ├── requirements.txt       # Python dependencies
-├── .env                  # Environment variables (create this)
-├── static/               # Static assets (icons, CSS)
+├── .env                   # Environment variables (create this)
+├── static/                # Static assets (icons, CSS)
 ├── templates/
-│   └── index.jinja       # Main HTML template
-└── tools/                # Core functionality modules
+│   └── index.jinja        # Main HTML template
+└── tools/                 # Core functionality modules
     ├── __init__.py
     ├── create_container.py  # AI Dockerfile generation
     ├── git_operations.py    # GitHub repository cloning
-    └── gitingest.py        # Repository analysis
+    └── gitingest.py          # Repository analysis
 ```
 
 ## 🔧 Configuration
 
 ### Environment Variables
 
-| Variable | Description | Required |
-|----------|-------------|----------|
-| `OPENAI_API_KEY` | Your OpenAI API key | Yes |
-| `PORT` | Server port (default: 8000) | No |
-| `HOST` | Server host (default: 0.0.0.0) | No |
+| Variable      | Description                          | Required |
+|----------------|---------------------------------------|----------|
+| `GROQ_API_KEY` | Your Groq API key                    | Yes      |
+| `GROQ_MODEL`   | Groq model to use (e.g. `llama-3.1-70b-versatile`) | No |
+| `PORT`         | Server port (default: `8000`)        | No       |
+| `HOST`         | Server host (default: `0.0.0.0`)     | No       |
 
 ### Advanced Usage
 
-You can use the tools programmatically:
+You can also use the tools programmatically:
 
 ```python
 from tools import clone_repo_tool, gitingest_tool, create_container_tool
@@ -109,17 +117,17 @@ import asyncio
 async def generate_dockerfile(github_url):
     # Clone repository
     clone_result = await clone_repo_tool(github_url)
-    
+
     # Analyze with gitingest
     analysis = await gitingest_tool(clone_result['local_path'])
-    
+
     # Generate Dockerfile
     dockerfile = await create_container_tool(
         gitingest_summary=analysis['summary'],
         gitingest_tree=analysis['tree'],
         gitingest_content=analysis['content']
     )
-    
+
     return dockerfile
 
 # Usage
@@ -129,9 +137,7 @@ print(result['dockerfile'])
 
 ## 🎨 Customization
 
-### Adding Custom Instructions
-
-Use the "Additional instructions" feature to customize generation:
+Use the "Additional instructions" field to customize generation, for example:
 
 - `"Use Alpine Linux for smaller image size"`
 - `"Include Redis and PostgreSQL"`
@@ -140,23 +146,20 @@ Use the "Additional instructions" feature to customize generation:
 
 ## 📝 License
 
-This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
+This project is licensed under the MIT License — see the [LICENSE](LICENSE) file for details.
 
 ## 🙏 Acknowledgments
 
-- **[OpenAI](https://openai.com/)** for providing the GPT-4 API
+- **[Groq](https://groq.com/)** for fast LLM inference
 - **[gitingest](https://github.com/cyclotruc/gitingest)** for repository analysis capabilities
-- **[FastAPI](https://fastapi.tiangolo.com/)** for the excellent web framework
+- **[FastAPI](https://fastapi.tiangolo.com/)** for the web framework
 - **[Monaco Editor](https://microsoft.github.io/monaco-editor/)** for code syntax highlighting
 
 ## 🔗 Links
 
-- **GitHub Repository**: [https://github.com/cyclotruc/gitship](https://github.com/cyclotruc/gitship)
-- **Demo**: Try it live with example repositories
-- **Issues**: [Report bugs or request features](https://github.com/cyclotruc/gitship/issues)
+- **GitHub Repository:** [github.com/hasnainaliasghar/Gitship](https://github.com/hasnainaliasghar/Gitship)
+- **Issues:** [Report bugs or request features](https://github.com/hasnainaliasghar/Gitship/issues)
 
 ---
 
-**Made with ❤️ by [Romain Courtois](https://github.com/cyclotruc)**
-
-*Turn any repository into a container in seconds!*
+*Turn any repository into a container in seconds.*
