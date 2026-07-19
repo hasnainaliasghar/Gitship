@@ -1,0 +1,850 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gitship</title>
+    
+    <!-- Favicon links -->
+    <link rel="icon" type="image/png" sizes="16x16" href="/static/icons8-docker-doodle-16.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="/static/icons8-docker-doodle-32.png">
+    <link rel="apple-touch-icon" href="/static/icons8-docker-doodle-120.png">
+    <link rel="shortcut icon" href="/static/icons8-docker-doodle-32.png">
+    
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/monaco-editor/0.44.0/min/vs/loader.min.js"></script>
+    <style>
+        .loader {
+            border: 8px solid #E6F2FF;
+            border-top: 8px solid #5A9BF5;
+            border-radius: 50%;
+            width: 64px;
+            height: 64px;
+            animation: spin 1s linear infinite;
+        }
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+        .monaco-container {
+            height: 400px;
+            border: 3px solid #1f2937;
+            border-radius: 0.5rem;
+            position: relative;
+            overflow: hidden;
+            background: #ffffff;
+            display: flex;
+            flex-direction: column;
+        }
+        .monaco-container > div {
+            flex: 1;
+            width: 100%;
+            height: 100%;
+        }
+        .monaco-container-compose {
+            height: 250px;
+            border: 3px solid #1f2937;
+            border-radius: 0.5rem;
+            position: relative;
+            overflow: hidden;
+            background: #ffffff;
+            display: flex;
+            flex-direction: column;
+        }
+        .monaco-container-compose > div {
+            flex: 1;
+            width: 100%;
+            height: 100%;
+        }
+    </style>
+</head>
+<body class="bg-[#F8FAFF] min-h-screen flex flex-col">
+    <!-- Header -->
+    <header class="border-b-[3px] border-gray-900">
+        <div class="max-w-4xl mx-auto px-4 py-4 flex justify-between items-center">
+            <h1 class="text-3xl font-bold tracking-tight">
+                <a href="/" class="hover:opacity-80 transition-opacity">
+                    <span class="text-gray-900">Git</span><span class="text-[#4A90E2]">ship</span>
+                </a>
+            </h1>
+            <a href="https://github.com/cyclotruc/gitship" target="_blank" class="flex items-center gap-2 text-gray-700 hover:text-gray-900 transition-colors">
+                <svg class="w-6 h-6" fill="currentColor" viewBox="0 0 24 24">
+                    <path d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z"/>
+                </svg>
+                <span class="hidden sm:inline">GitHub</span>
+            </a>
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <main class="max-w-4xl mx-auto px-4 py-8 flex-grow">
+        <!-- Hero Section -->
+        <div class="mb-12 text-center py-8">
+            <div class="flex justify-center items-center gap-8 mb-6">
+                <svg class="w-12 h-12" viewBox="0 0 80 80" fill="none">
+                    <path d="m35.213 16.953.595-5.261 2.644 4.587a35.056 35.056 0 0 0 26.432 17.33l5.261.594-4.587 2.644A35.056 35.056 0 0 0 48.23 63.28l-.595 5.26-2.644-4.587a35.056 35.056 0 0 0-26.432-17.328l-5.261-.595 4.587-2.644a35.056 35.056 0 0 0 17.329-26.433Z" fill="#4A90E2" stroke="#1f2937" stroke-width="2"/>
+                </svg>
+                <h2 class="text-4xl md:text-6xl font-bold tracking-tighter">
+                    Generate Dockerfiles
+                    <br>
+                    <span class="text-gray-600">from GitHub repos</span>
+                </h2>
+                <svg class="w-12 h-12" viewBox="0 0 80 80" fill="none">
+                    <path d="m35.213 16.953.595-5.261 2.644 4.587a35.056 35.056 0 0 0 26.432 17.33l5.261.594-4.587 2.644A35.056 35.056 0 0 0 48.23 63.28l-.595 5.26-2.644-4.587a35.056 35.056 0 0 0-26.432-17.328l-5.261-.595 4.587-2.644a35.056 35.056 0 0 0 17.329-26.433Z" fill="#5A9BF5" stroke="#1f2937" stroke-width="2"/>
+                </svg>
+            </div>
+            <p class="text-gray-600 text-lg max-w-2xl mx-auto px-4">
+                Paste any GitHub repository URL and get an AI-generated Dockerfile 
+                tailored to your project's technology stack.
+            </p>
+        </div>
+
+        <!-- Error Message -->
+        {% if error %}
+        <div class="mb-6 p-4 bg-red-50 border-[3px] border-red-500 rounded-lg text-red-700">
+            {{ error }}
+        </div>
+        {% endif %}
+
+
+        <!-- Input Form -->
+        <div class="relative mb-8">
+            <div class="w-full h-full absolute inset-0 bg-gray-900 rounded-xl translate-y-2 translate-x-2"></div>
+            <div class="rounded-xl relative z-20 p-8 border-[3px] border-gray-900 bg-[#E6F2FF]">
+                <form method="post" class="flex flex-col md:flex-row gap-4" onsubmit="prepareFormSubmit(event)">
+                    <div class="relative flex-1">
+                        <div class="w-full h-full rounded bg-gray-900 translate-y-1 translate-x-1 absolute inset-0 z-10"></div>
+                        <input 
+                            type="url" 
+                            name="repo_url" 
+                            id="repo_url"
+                            value="{{ repo_url }}"
+                            placeholder="https://github.com/username/repository"
+                            required
+                            class="border-[3px] w-full relative z-20 border-gray-900 placeholder-gray-600 text-lg font-medium focus:outline-none py-3.5 px-6 rounded"
+                        >
+                    </div>
+                    <div class="relative group">
+                        <div class="w-full h-full rounded bg-gray-800 translate-y-1 translate-x-1 absolute inset-0 z-10"></div>
+                        <button 
+                            type="submit"
+                            class="py-3.5 rounded px-8 group-hover:-translate-y-px group-hover:-translate-x-px ease-out duration-300 z-20 relative w-full md:w-auto border-[3px] border-gray-900 font-medium bg-[#5A9BF5] tracking-wide text-lg text-gray-900"
+                        >
+                            Generate Dockerfile
+                        </button>
+                    </div>
+                    <input type="hidden" name="additional_instructions_hidden" id="additional_instructions_hidden" value="">
+                </form>
+                
+                <!-- Examples and Additional instructions row -->
+                <div class="mt-6 flex flex-col md:flex-row md:justify-between md:items-start gap-4">
+                    <!-- Example repositories section -->
+                    <div class="flex-1">
+                        <p class="text-gray-700 mb-3 font-medium">Try these example repositories:</p>
+                        <div class="flex flex-wrap gap-2">
+                            <button onclick="submitExample('https://github.com/cyclotruc/gitingest')"
+                                    class="px-4 py-2 bg-[#E6F2FF] hover:bg-[#5A9BF5] text-gray-900 rounded transition-colors duration-200 border-[3px] border-gray-900 relative hover:-translate-y-px hover:-translate-x-px text-sm font-medium">
+                                Gitingest
+                            </button>
+                            <button onclick="submitExample('https://github.com/cyclotruc/gitship')"
+                                    class="px-4 py-2 bg-[#E6F2FF] hover:bg-[#5A9BF5] text-gray-900 rounded transition-colors duration-200 border-[3px] border-gray-900 relative hover:-translate-y-px hover:-translate-x-px text-sm font-medium">
+                                Gitship
+                            </button>
+                        </div>
+                    </div>
+                    
+                    <!-- Additional instructions checkbox -->
+                    <div class="flex-shrink-0 self-start md:self-center">
+                        <div class="flex items-center">
+                            <input type="checkbox" 
+                                   id="show_instructions" 
+                                   onchange="toggleInstructions()"
+                                   class="w-4 h-4 text-[#5A9BF5] bg-gray-100 border-gray-300 rounded focus:ring-[#5A9BF5] focus:ring-2">
+                            <label for="show_instructions" class="ml-2 text-gray-700 font-medium">Additional instructions</label>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Additional instructions textarea (spans full width) -->
+                <div id="instructions_container" class="hidden mt-4">
+                    <div class="relative">
+                        <div class="w-full h-full rounded bg-gray-900 translate-y-1 translate-x-1 absolute inset-0 z-10"></div>
+                        <textarea 
+                            id="additional_instructions"
+                            name="additional_instructions"
+                            placeholder="e.g., Use Alpine Linux, include specific tools, optimize for production, etc."
+                            rows="3"
+                            class="border-[3px] w-full relative z-20 border-gray-900 placeholder-gray-600 text-sm font-medium focus:outline-none py-3 px-4 rounded resize-none"
+                        ></textarea>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Loading State -->
+        {% if loading %}
+        <div class="relative">
+            <div class="w-full h-full absolute inset-0 bg-black rounded-xl translate-y-2 translate-x-2"></div>
+            <div class="bg-[#F0F4FF] rounded-xl border-[3px] border-gray-900 p-8 relative z-20 flex flex-col items-center space-y-4">
+                <div class="loader"></div>
+                <p class="text-lg font-bold text-gray-900">Analyzing repository and generating Dockerfile...</p>
+                <p class="text-sm text-gray-600">This may take a few moments</p>
+            </div>
+        </div>
+        {% endif %}
+
+        <!-- Streaming State -->
+        {% if streaming %}
+        <div id="streaming-container" class="relative">
+            <div class="w-full h-full absolute inset-0 bg-gray-900 rounded-xl translate-y-2 translate-x-2"></div>
+            <div class="bg-[#F0F4FF] rounded-xl border-[3px] border-gray-900 p-8 relative z-20">
+                
+                <!-- Status Display -->
+                <div class="text-center mb-8">
+                    <div class="loader mx-auto mb-4"></div>
+                    <h2 class="text-2xl font-bold text-gray-900 mb-2">Generating Your Dockerfile</h2>
+                    <p id="status-message" class="text-lg text-gray-600">Connecting...</p>
+                </div>
+
+                <!-- Streaming Response Box -->
+                <div id="streaming-response-container" class="relative mb-6 hidden">
+                    <div class="w-full h-full rounded bg-gray-900 translate-y-1 translate-x-1 absolute inset-0"></div>
+                    <div class="bg-[#E6F2FF] border-[3px] border-gray-900 rounded p-6 relative z-10">
+                        <h3 class="text-lg font-bold text-gray-900 mb-4">Live AI Response:</h3>
+                        <div 
+                            id="streaming-content" 
+                            class="max-h-[500px] overflow-y-auto bg-white border-[2px] border-gray-300 rounded p-4 font-mono text-sm whitespace-pre-wrap"
+                        ></div>
+                    </div>
+                </div>
+
+                <!-- Progress Steps -->
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+                    <div id="step-clone" class="bg-[#E6F2FF] border-[3px] border-gray-300 rounded p-4 transition-all duration-300">
+                        <div class="flex items-center">
+                            <div class="w-8 h-8 rounded-full border-[3px] border-gray-300 flex items-center justify-center mr-3">
+                                <span class="text-sm font-bold">1</span>
+                            </div>
+                            <span class="font-medium">Clone Repository</span>
+                        </div>
+                    </div>
+                    <div id="step-analyze" class="bg-[#E6F2FF] border-[3px] border-gray-300 rounded p-4 transition-all duration-300">
+                        <div class="flex items-center">
+                            <div class="w-8 h-8 rounded-full border-[3px] border-gray-300 flex items-center justify-center mr-3">
+                                <span class="text-sm font-bold">2</span>
+                            </div>
+                            <span class="font-medium">Analyze Structure</span>
+                        </div>
+                    </div>
+                    <div id="step-generate" class="bg-[#E6F2FF] border-[3px] border-gray-300 rounded p-4 transition-all duration-300">
+                        <div class="flex items-center">
+                            <div class="w-8 h-8 rounded-full border-[3px] border-gray-300 flex items-center justify-center mr-3">
+                                <span class="text-sm font-bold">3</span>
+                            </div>
+                            <span class="font-medium">Generate Dockerfile</span>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+
+        <!-- Results Container (hidden initially) -->
+        <div id="results-container" class="relative hidden">
+            <div class="w-full h-full absolute inset-0 bg-gray-900 rounded-xl translate-y-2 translate-x-2"></div>
+            <div class="bg-[#F0F4FF] rounded-xl border-[3px] border-gray-900 p-6 relative z-20 space-y-6">
+                <!-- Results content will be populated by JavaScript -->
+            </div>
+        </div>
+        {% endif %}
+
+        <!-- Results (for non-streaming requests) -->
+        {% if result %}
+        <div class="relative">
+            <div class="w-full h-full absolute inset-0 bg-gray-900 rounded-xl translate-y-2 translate-x-2"></div>
+            <div class="bg-[#F0F4FF] rounded-xl border-[3px] border-gray-900 p-6 relative z-20 space-y-6">
+                
+                <!-- Project Info -->
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-6">
+                    <div class="bg-[#E6F2FF] border-[3px] border-gray-900 rounded p-4">
+                        <h3 class="font-bold text-gray-900">Project</h3>
+                        <p class="text-sm">{{ result.project_name }}</p>
+                    </div>
+                    <div class="bg-[#E6F2FF] border-[3px] border-gray-900 rounded p-4">
+                        <h3 class="font-bold text-gray-900">Technology Stack</h3>
+                        <p class="text-sm">{{ result.technology_stack }}</p>
+                    </div>
+                    <div class="bg-[#E6F2FF] border-[3px] border-gray-900 rounded p-4">
+                        <h3 class="font-bold text-gray-900">Repository Size</h3>
+                        <p class="text-sm">{{ result.repo_info.file_count }} files ({{ result.repo_info.size_mb }} MB)</p>
+                    </div>
+                </div>
+
+                <!-- Dockerfile -->
+                <div>
+                    <div class="flex justify-between items-center mb-4">
+                        <h3 class="text-xl font-bold text-gray-900">Dockerfile</h3>
+                        <div class="relative group">
+                            <div class="w-full h-full rounded bg-gray-900 translate-y-1 translate-x-1 absolute inset-0"></div>
+                            <button 
+                                onclick="copyDockerfile()"
+                                class="px-4 py-2 bg-[#5A9BF5] border-[3px] border-gray-900 text-gray-900 rounded group-hover:-translate-y-px group-hover:-translate-x-px transition-transform relative z-10 flex items-center gap-2"
+                            >
+                                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 5H6a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2v-1M8 5a2 2 0 002 2h2a2 2 0 002-2M8 5a2 2 0 012-2h2a2 2 0 012 2m0 0h2a2 2 0 012 2v3m2 4H10m0 0l3-3m-3 3l3 3" />
+                                </svg>
+                                Copy Dockerfile
+                            </button>
+                        </div>
+                    </div>
+                    <div class="relative">
+                        <div class="w-full h-full rounded bg-gray-900 translate-y-1 translate-x-1 absolute inset-0"></div>
+                        <div class="monaco-container relative z-10 rounded">
+                            <div id="dockerfile-editor"></div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Docker Compose (if available) -->
+                {% if result.docker_compose %}
+                <div>
+                    <div class="flex justify-between items-center mb-4">
+                        <h3 class="text-xl font-bold text-gray-900">docker-compose.yml</h3>
+                        <div class="relative group">
+                            <div class="w-full h-full rounded bg-gray-900 translate-y-1 translate-x-1 absolute inset-0"></div>
+                            <button 
+                                onclick="copyCompose()"
+                                class="px-4 py-2 bg-[#5A9BF5] border-[3px] border-gray-900 text-gray-900 rounded group-hover:-translate-y-px group-hover:-translate-x-px transition-transform relative z-10 flex items-center gap-2"
+                            >
+                                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 5H6a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2v-1M8 5a2 2 0 002 2h2a2 2 0 002-2M8 5a2 2 0 012-2h2a2 2 0 012 2m0 0h2a2 2 0 012 2v3m2 4H10m0 0l3-3m-3 3l3 3" />
+                                </svg>
+                                Copy Compose
+                            </button>
+                        </div>
+                    </div>
+                    <div class="relative">
+                        <div class="w-full h-full rounded bg-gray-900 translate-y-1 translate-x-1 absolute inset-0"></div>
+                        <div class="monaco-container-compose relative z-10 rounded">
+                            <div id="compose-editor"></div>
+                        </div>
+                    </div>
+                </div>
+                {% endif %}
+
+                <!-- Reasoning & Notes -->
+                {% if result.reasoning or result.additional_notes %}
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    {% if result.reasoning %}
+                    <div>
+                        <h3 class="text-lg font-bold text-gray-900 mb-2">Base Image Reasoning</h3>
+                        <div class="bg-[#E6F2FF] border-[3px] border-gray-900 rounded p-4">
+                            <p class="text-sm">{{ result.reasoning }}</p>
+                        </div>
+                    </div>
+                    {% endif %}
+                    
+                    {% if result.additional_notes %}
+                    <div>
+                        <h3 class="text-lg font-bold text-gray-900 mb-2">Additional Notes</h3>
+                        <div class="bg-[#E6F2FF] border-[3px] border-gray-900 rounded p-4">
+                            <p class="text-sm whitespace-pre-wrap">{{ result.additional_notes }}</p>
+                        </div>
+                    </div>
+                    {% endif %}
+                </div>
+                {% endif %}
+
+            </div>
+        </div>
+        {% endif %}
+    </main>
+
+
+    <script>
+        // Example submission function
+        function submitExample(repoUrl) {
+            const input = document.getElementById('repo_url');
+            input.value = repoUrl;
+            input.focus();
+            // Optionally auto-submit the form
+            // input.form.submit();
+        }
+
+        // Toggle additional instructions visibility
+        function toggleInstructions() {
+            const checkbox = document.getElementById('show_instructions');
+            const container = document.getElementById('instructions_container');
+            
+            if (checkbox.checked) {
+                container.classList.remove('hidden');
+                container.classList.add('block');
+            } else {
+                container.classList.add('hidden');
+                container.classList.remove('block');
+                // Clear the textarea when hiding
+                document.getElementById('additional_instructions').value = '';
+            }
+        }
+
+        // Prepare form submission by copying additional instructions to hidden input
+        function prepareFormSubmit(event) {
+            const checkbox = document.getElementById('show_instructions');
+            const instructionsTextarea = document.getElementById('additional_instructions');
+            const hiddenInput = document.getElementById('additional_instructions_hidden');
+            
+            if (checkbox.checked && instructionsTextarea.value.trim()) {
+                hiddenInput.value = instructionsTextarea.value.trim();
+            } else {
+                hiddenInput.value = '';
+            }
+            
+            // Allow form to submit normally
+            return true;
+        }
+
+        // Monaco Editor setup
+        let dockerfileEditor = null;
+        let composeEditor = null;
+
+        // Configure Monaco Editor loader
+        require.config({ 
+            paths: { 
+                'vs': 'https://cdnjs.cloudflare.com/ajax/libs/monaco-editor/0.44.0/min/vs' 
+            } 
+        });
+
+        // Initialize Monaco Editors when available
+        function initializeEditors() {
+            console.log('Attempting to initialize Monaco editors...');
+            require(['vs/editor/editor.main'], function() {
+                console.log('Monaco editor loaded successfully');
+                // Only initialize if we have results to show
+                {% if result %}
+                console.log('Found result data, initializing editors...');
+                // Add a small delay to ensure DOM is ready
+                setTimeout(() => {
+                    initDockerfileEditor('{{ result.dockerfile|e }}');
+                    {% if result.docker_compose %}
+                    initComposeEditor('{{ result.docker_compose|e }}');
+                    {% endif %}
+                }, 200);
+                {% else %}
+                console.log('No result data available');
+                {% endif %}
+            }, function(error) {
+                console.error('Failed to load Monaco editor:', error);
+            });
+        }
+
+        function initDockerfileEditor(content) {
+            const element = document.getElementById('dockerfile-editor');
+            if (element) {
+                console.log('Initializing Dockerfile editor with content:', content);
+                
+                // Set explicit dimensions
+                element.style.width = '100%';
+                element.style.height = '100%';
+                
+                dockerfileEditor = monaco.editor.create(element, {
+                    value: content || '# No Dockerfile content available',
+                    language: 'dockerfile',
+                    theme: 'vs',
+                    readOnly: true,
+                    minimap: { enabled: false },
+                    fontSize: 14,
+                    lineNumbers: 'on',
+                    wordWrap: 'on',
+                    folding: true,
+                    automaticLayout: false,
+                    scrollBeyondLastLine: false,
+                    renderLineHighlight: 'none',
+                    selectionHighlight: false,
+                    occurrencesHighlight: false
+                });
+                
+                // Force layout with explicit dimensions
+                setTimeout(() => {
+                    const rect = element.getBoundingClientRect();
+                    console.log('Dockerfile editor rect:', rect.width, 'x', rect.height);
+                    if (rect.width > 0 && rect.height > 0) {
+                        dockerfileEditor.layout({ width: rect.width, height: rect.height });
+                        console.log('Dockerfile editor layout complete');
+                    }
+                }, 150);
+            } else {
+                console.error('dockerfile-editor element not found');
+            }
+        }
+
+        function initComposeEditor(content) {
+            const element = document.getElementById('compose-editor');
+            if (element) {
+                console.log('Initializing Compose editor with content:', content);
+                
+                // Set explicit dimensions
+                element.style.width = '100%';
+                element.style.height = '100%';
+                
+                composeEditor = monaco.editor.create(element, {
+                    value: content || '# No docker-compose content available',
+                    language: 'yaml',
+                    theme: 'vs',
+                    readOnly: true,
+                    minimap: { enabled: false },
+                    fontSize: 14,
+                    lineNumbers: 'on',
+                    wordWrap: 'on',
+                    folding: true,
+                    automaticLayout: false,
+                    scrollBeyondLastLine: false,
+                    renderLineHighlight: 'none',
+                    selectionHighlight: false,
+                    occurrencesHighlight: false
+                });
+                
+                // Force layout with explicit dimensions
+                setTimeout(() => {
+                    const rect = element.getBoundingClientRect();
+                    console.log('Compose editor rect:', rect.width, 'x', rect.height);
+                    if (rect.width > 0 && rect.height > 0) {
+                        composeEditor.layout({ width: rect.width, height: rect.height });
+                        console.log('Compose editor layout complete');
+                    }
+                }, 150);
+            } else {
+                console.error('compose-editor element not found');
+            }
+        }
+
+        function createMonacoEditor(elementId, content, language) {
+            console.log('Creating Monaco editor for:', elementId, 'with language:', language);
+            const element = document.getElementById(elementId);
+            if (!element) {
+                console.error('Element not found:', elementId);
+                return null;
+            }
+            
+            // Ensure the element has proper dimensions
+            const container = element.parentElement;
+            console.log('Container dimensions:', container.offsetWidth, 'x', container.offsetHeight);
+            
+            // Set explicit dimensions on the editor element
+            element.style.width = '100%';
+            element.style.height = '100%';
+            
+            const editor = monaco.editor.create(element, {
+                value: content || '# No content available',
+                language: language,
+                theme: 'vs',
+                readOnly: true,
+                minimap: { enabled: false },
+                fontSize: 14,
+                lineNumbers: 'on',
+                wordWrap: 'on',
+                folding: true,
+                automaticLayout: false, // We'll handle layout manually
+                scrollBeyondLastLine: false,
+                renderLineHighlight: 'none',
+                selectionHighlight: false,
+                occurrencesHighlight: false
+            });
+            
+            // Force layout with explicit dimensions
+            const forceLayout = () => {
+                const rect = element.getBoundingClientRect();
+                console.log('Element rect:', rect.width, 'x', rect.height);
+                if (rect.width > 0 && rect.height > 0) {
+                    editor.layout({ width: rect.width, height: rect.height });
+                    console.log('Editor layout complete for:', elementId, 'with dimensions:', rect.width, 'x', rect.height);
+                } else {
+                    console.warn('Element has zero dimensions, retrying layout...');
+                    setTimeout(forceLayout, 100);
+                }
+            };
+            
+            // Initial layout
+            setTimeout(forceLayout, 100);
+            
+            return editor;
+        }
+
+        // Copy functions for Monaco editors
+        function copyDockerfile() {
+            const content = dockerfileEditor ? dockerfileEditor.getValue() : '';
+            const button = event.target.closest('button');
+            copyToClipboard(content, 'Dockerfile copied!', button);
+        }
+
+        function copyCompose() {
+            const content = composeEditor ? composeEditor.getValue() : '';
+            const button = event.target.closest('button');
+            copyToClipboard(content, 'Compose file copied!', button);
+        }
+
+        // WebSocket streaming functionality
+        {% if streaming %}
+        const sessionId = "{{ session_id }}";
+        const protocol = window.location.protocol === 'https:' ? 'wss:' : 'ws:';
+        const wsUrl = protocol + '//' + window.location.host + '/ws/' + sessionId;
+        
+        let ws;
+        let streamingContent = '';
+        let currentStep = 'clone';
+        let generationFinished = false;
+        
+        function connectWebSocket() {
+            ws = new WebSocket(wsUrl);
+            
+            ws.onopen = function(event) {
+                console.log('WebSocket connected');
+                updateStatus('🔗 Connected! Starting generation...');
+            };
+            
+            ws.onmessage = function(event) {
+                const data = JSON.parse(event.data);
+                console.log('Received:', data);
+                
+                switch(data.type) {
+                    case 'status':
+                        updateStatus(data.content);
+                        updateStepProgress(data.content);
+                        break;
+                    case 'stream_start':
+                        updateStatus('🤖 AI is generating response...');
+                        highlightStep('generate');
+                        // Show the streaming response container
+                        document.getElementById('streaming-response-container').classList.remove('hidden');
+                        break;
+                    case 'chunk':
+                        streamingContent += data.content;
+                        updateStreamingContent(streamingContent);
+                        // Ensure streaming response container is visible
+                        document.getElementById('streaming-response-container').classList.remove('hidden');
+                        break;
+                    case 'complete':
+                        generationFinished = true;
+                        updateStatus('✅ Generation complete!');
+                        showResults(data.result);
+                        break;
+                    case 'error':
+                        generationFinished = true;
+                        updateStatus('❌ Error: ' + data.content);
+                        showError(data.content);
+                        break;
+                }
+            };
+            
+            ws.onclose = function(event) {
+                console.log('WebSocket closed');
+                if (!generationFinished && event.code !== 1000) { // 1000 is normal closure
+                    updateStatus('❌ Connection lost. Please refresh and try again.');
+                }
+            };
+            
+            ws.onerror = function(error) {
+                console.error('WebSocket error:', error);
+                updateStatus('❌ Connection error. Please refresh and try again.');
+            };
+        }
+        
+        function updateStatus(message) {
+            document.getElementById('status-message').textContent = message;
+        }
+        
+        function updateStepProgress(message) {
+            if (message.includes('Cloning') || message.includes('🔄')) {
+                highlightStep('clone');
+            } else if (message.includes('Analyzing') || message.includes('📊')) {
+                completeStep('clone');
+                highlightStep('analyze');
+            } else if (message.includes('Generating') || message.includes('🐳')) {
+                completeStep('analyze');
+                highlightStep('generate');
+            }
+        }
+        
+        function highlightStep(step) {
+            const stepElement = document.getElementById('step-' + step);
+            stepElement.className = stepElement.className.replace('border-gray-300', 'border-yellow-500 bg-yellow-50');
+        }
+        
+        function completeStep(step) {
+            const stepElement = document.getElementById('step-' + step);
+            stepElement.className = stepElement.className.replace('border-gray-300', 'border-green-500 bg-green-50');
+            stepElement.className = stepElement.className.replace('border-yellow-500 bg-yellow-50', 'border-green-500 bg-green-50');
+        }
+        
+        function updateStreamingContent(content) {
+            const contentDiv = document.getElementById('streaming-content');
+            contentDiv.textContent = content;
+            contentDiv.scrollTop = contentDiv.scrollHeight;
+        }
+        
+        function showResults(result) {
+            completeStep('generate');
+            
+            // Hide streaming container
+            document.getElementById('streaming-container').style.display = 'none';
+            
+            // Show results container
+            const resultsContainer = document.getElementById('results-container');
+            resultsContainer.classList.remove('hidden');
+            
+            // Populate results with Monaco editors
+            resultsContainer.innerHTML = generateResultsHTML(result);
+            
+            // Initialize Monaco editors for streaming results
+            setTimeout(() => {
+                require(['vs/editor/editor.main'], function() {
+                    dockerfileEditor = createMonacoEditor('dockerfile-editor-stream', result.dockerfile, 'dockerfile');
+                    
+                    if (result.docker_compose) {
+                        composeEditor = createMonacoEditor('compose-editor-stream', result.docker_compose, 'yaml');
+                    }
+                });
+            }, 100);
+        }
+        
+        function showError(error) {
+            const contentDiv = document.getElementById('streaming-content');
+            contentDiv.innerHTML = '<div class="text-red-600 font-bold">Error: ' + error + '</div>';
+        }
+        
+        function generateResultsHTML(result) {
+            let html = '<div class="space-y-6">';
+            
+            // Project Info
+            html += '<div class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-6">';
+            html += '<div class="bg-[#E6F2FF] border-[3px] border-gray-900 rounded p-4">';
+            html += '<h3 class="font-bold text-gray-900">Project</h3>';
+            html += '<p class="text-sm">' + result.project_name + '</p>';
+            html += '</div>';
+            html += '<div class="bg-[#E6F2FF] border-[3px] border-gray-900 rounded p-4">';
+            html += '<h3 class="font-bold text-gray-900">Technology Stack</h3>';
+            html += '<p class="text-sm">' + result.technology_stack + '</p>';
+            html += '</div>';
+            html += '<div class="bg-[#E6F2FF] border-[3px] border-gray-900 rounded p-4">';
+            html += '<h3 class="font-bold text-gray-900">Repository Size</h3>';
+            html += '<p class="text-sm">' + result.repo_info.file_count + ' files (' + result.repo_info.size_mb + ' MB)</p>';
+            html += '</div>';
+            html += '</div>';
+
+            // Dockerfile
+            html += '<div>';
+            html += '<div class="flex justify-between items-center mb-4">';
+            html += '<h3 class="text-xl font-bold text-gray-900">Generated Dockerfile</h3>';
+            html += '<div class="relative group">';
+            html += '<div class="w-full h-full rounded bg-gray-900 translate-y-1 translate-x-1 absolute inset-0"></div>';
+            html += '<button onclick="copyDockerfile()" class="px-4 py-2 bg-[#5A9BF5] border-[3px] border-gray-900 text-gray-900 rounded group-hover:-translate-y-px group-hover:-translate-x-px transition-transform relative z-10 flex items-center gap-2">';
+            html += '<svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 5H6a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2v-1M8 5a2 2 0 002 2h2a2 2 0 002-2M8 5a2 2 0 012-2h2a2 2 0 012 2m0 0h2a2 2 0 012 2v3m2 4H10m0 0l3-3m-3 3l3 3" /></svg>';
+            html += 'Copy Dockerfile';
+            html += '</button>';
+            html += '</div>';
+            html += '</div>';
+            html += '<div class="relative">';
+            html += '<div class="w-full h-full rounded bg-gray-900 translate-y-1 translate-x-1 absolute inset-0"></div>';
+            html += '<div class="monaco-container relative z-10 rounded">';
+            html += '<div id="dockerfile-editor-stream"></div>';
+            html += '</div>';
+            html += '</div>';
+            html += '</div>';
+
+            // Docker Compose (if available)
+            if (result.docker_compose) {
+                html += '<div>';
+                html += '<div class="flex justify-between items-center mb-4">';
+                html += '<h3 class="text-xl font-bold text-gray-900">Suggested docker-compose.yml</h3>';
+                html += '<div class="relative group">';
+                html += '<div class="w-full h-full rounded bg-gray-900 translate-y-1 translate-x-1 absolute inset-0"></div>';
+                html += '<button onclick="copyCompose()" class="px-4 py-2 bg-[#5A9BF5] border-[3px] border-gray-900 text-gray-900 rounded group-hover:-translate-y-px group-hover:-translate-x-px transition-transform relative z-10 flex items-center gap-2">';
+                html += '<svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 5H6a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2v-1M8 5a2 2 0 002 2h2a2 2 0 002-2M8 5a2 2 0 012-2h2a2 2 0 012 2m0 0h2a2 2 0 012 2v3m2 4H10m0 0l3-3m-3 3l3 3" /></svg>';
+                html += 'Copy Compose';
+                html += '</button>';
+                html += '</div>';
+                html += '</div>';
+                html += '<div class="relative">';
+                html += '<div class="w-full h-full rounded bg-gray-900 translate-y-1 translate-x-1 absolute inset-0"></div>';
+                html += '<div class="monaco-container-compose relative z-10 rounded">';
+                html += '<div id="compose-editor-stream"></div>';
+                html += '</div>';
+                html += '</div>';
+                html += '</div>';
+            }
+
+            // Reasoning & Notes
+            if (result.reasoning || result.additional_notes) {
+                html += '<div class="grid grid-cols-1 md:grid-cols-2 gap-6">';
+                
+                if (result.reasoning) {
+                    html += '<div>';
+                    html += '<h3 class="text-lg font-bold text-gray-900 mb-2">Base Image Reasoning</h3>';
+                    html += '<div class="bg-[#E6F2FF] border-[3px] border-gray-900 rounded p-4">';
+                    html += '<p class="text-sm">' + result.reasoning + '</p>';
+                    html += '</div>';
+                    html += '</div>';
+                }
+                
+                if (result.additional_notes) {
+                    html += '<div>';
+                    html += '<h3 class="text-lg font-bold text-gray-900 mb-2">Additional Notes</h3>';
+                    html += '<div class="bg-[#E6F2FF] border-[3px] border-gray-900 rounded p-4">';
+                    html += '<p class="text-sm whitespace-pre-wrap">' + result.additional_notes + '</p>';
+                    html += '</div>';
+                    html += '</div>';
+                }
+                
+                html += '</div>';
+            }
+
+            html += '</div>';
+            return html;
+        }
+        
+        // Connect when page loads
+        connectWebSocket();
+        {% endif %}
+
+        // Copy to clipboard functionality
+        async function copyToClipboard(text, successMessage, targetButton) {
+            try {
+                await navigator.clipboard.writeText(text);
+                // Show success feedback only on the specific button
+                if (targetButton) {
+                    const originalText = targetButton.innerHTML;
+                    targetButton.innerHTML = '✓ ' + (successMessage || 'Copied!');
+                    setTimeout(() => {
+                        targetButton.innerHTML = originalText;
+                    }, 2000);
+                }
+            } catch (err) {
+                console.error('Failed to copy: ', err);
+            }
+        }
+
+        // Initialize editors when page loads
+        document.addEventListener('DOMContentLoaded', function() {
+            console.log('DOM loaded, checking for Monaco containers...');
+            
+            // Check if containers exist and have proper dimensions
+            const dockerfileContainer = document.getElementById('dockerfile-editor');
+            const composeContainer = document.getElementById('compose-editor');
+            
+            if (dockerfileContainer) {
+                console.log('Dockerfile container found:', dockerfileContainer.offsetWidth, 'x', dockerfileContainer.offsetHeight);
+            }
+            if (composeContainer) {
+                console.log('Compose container found:', composeContainer.offsetWidth, 'x', composeContainer.offsetHeight);
+            }
+            
+            initializeEditors();
+        });
+
+        // Handle window resize for Monaco editors
+        window.addEventListener('resize', () => {
+            if (dockerfileEditor) dockerfileEditor.layout();
+            if (composeEditor) composeEditor.layout();
+        });
+    </script>
+</body>
+</html> 

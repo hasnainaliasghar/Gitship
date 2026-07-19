@@ -1,0 +1,8 @@
+openai-agents
+python-dotenv 
+gitingest
+fastapi
+uvicorn[standard]
+jinja2
+python-multipart
+api-analytics[fastapi]
