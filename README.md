@@ -1,4 +1,6 @@
-# Gitship 🐳
+# **Gitship** 🐳
+
+![Gitship app screenshot](docs/Gitship-picture.png)
 
 **Turn any GitHub repository into a production-ready Docker container with AI-powered Dockerfile generation.**
 
@@ -6,29 +8,26 @@
 [![Python 3.9+](https://img.shields.io/badge/python-3.9+-blue.svg)](https://www.python.org/downloads/)
 [![FastAPI](https://img.shields.io/badge/FastAPI-0.68+-00a393.svg)](https://fastapi.tiangolo.com/)
 
-Gitship is an AI-powered web application that automatically generates production-ready Dockerfiles by analyzing GitHub repositories. Paste in a GitHub URL and get a tailored Dockerfile back, complete with intelligent base image selection, dependency management, and Docker best practices.
+Gitship is an AI web application that automatically generates production-ready Dockerfiles by analyzing GitHub repositories.<br>
+Paste in a GitHub URL and get a tailored **Dockerfile** back, complete with intelligent base image selection, dependency management, and Docker best practices.
 
-> 🏆 Built for **[OpenAI Build Week](https://openai.devpost.com/)** — Developer Tools track.
-
-**Note on AI usage:** Gitship's *runtime* Dockerfile generation is powered by the Groq API. The *project itself* — its codebase, architecture, and features — was built with the help of **Codex and GPT-5.6**, as detailed below.
+> 🏆 Built for **[OpenAI Build Week](https://openai.devpost.com/)** : Developer Tools track.
 
 ## 🤖 How Codex & GPT-5.6 Were Used
 
-- **Codex** — [describe here: e.g. which parts of Gitship's codebase Codex generated or accelerated, such as the FastAPI backend scaffolding, the WebSocket streaming logic, or the Dockerfile-generation prompt engineering]
-- **GPT-5.6** — [describe here: e.g. what GPT-5.6 was used for during development — planning the architecture, writing prompts, debugging, reviewing code]
-- **Key decisions made with Codex's help** — [describe here: e.g. choosing the multi-stage build strategy, structuring the `tools/` module, or debugging the gitingest integration]
-- **/feedback Codex Session ID:** `[paste your session ID here]`
+- **Codex:**  Codex used to write complete code, such as the FastAPI backend scaffolding, the WebSocket streaming logic, or the Dockerfile-generation prompt engineering <br><br>
+- **GPT-5.6:**  GPT-5.6 Model was used for planning the architecture, writing prompts, debugging, reviewing code.
 
 ## ✨ Features
 
-- **🤖 AI-Powered Analysis** — Uses Groq's Llama models to analyze repository structure and generate intelligent Dockerfiles
-- **⚡ Real-time Streaming** — Watch the AI generate your Dockerfile live via WebSocket streaming
-- **🎯 Smart Detection** — Automatically detects technology stacks (Python, Node.js, Java, Go, etc.)
-- **🔧 Production-Ready Output** — Generates Dockerfiles following best practices: proper security, multi-stage builds, and optimization
-- **📋 Custom Instructions** — Add your own requirements for specialized environments
-- **📄 Docker Compose Support** — Automatically suggests a `docker-compose.yml` for multi-service applications
-- **🎨 Modern UI** — Clean, responsive interface with Monaco editor for syntax highlighting
-- **📱 Mobile Friendly** — Works seamlessly on desktop and mobile
+- **🤖 AI-Powered Analysis:** Uses Groq's Llama models to analyze repository structure and generate intelligent Dockerfiles<br><br>
+- **⚡ Real-time Streaming:** Watch the AI generate your Dockerfile live via WebSocket streaming<br><br>
+- **🎯 Smart Detection:** Automatically detects technology stacks (Python, Node.js, Java, Go, etc.)<br><br>
+- **🔧 Production-Ready Output:** Generates Dockerfiles following best practices: proper security, multi-stage builds, and optimization<br><br>
+- **📋 Custom Instructions:** Add your own requirements for specialized environments<br><br>
+- **📄 Docker Compose Support:** Automatically suggests a `docker-compose.yml` for multi-service applications<br><br>
+- **🎨 Modern UI:** Clean, responsive interface with Monaco editor for syntax highlighting<br><br>
+- **📱 Mobile Friendly:** Works seamlessly on desktop and mobile
 
 ## 🚀 Quick Start
 
@@ -68,10 +67,10 @@ Gitship is an AI-powered web application that automatically generates production
 
 ## 🛠️ How It Works
 
-1. **Repository Cloning** — Gitship clones the target GitHub repository locally using Git
-2. **Code Analysis** — Uses [gitingest](https://github.com/cyclotruc/gitingest) to analyze repository structure and extract relevant context
-3. **AI Generation** — Sends the analysis to Groq's API with specialized prompts for Dockerfile generation
-4. **Smart Optimization** — The AI considers:
+1. **Repository Cloning:** Gitship clones the target GitHub repository locally using Git
+2. **Code Analysis:** Uses [gitingest](https://github.com/cyclotruc/gitingest) to analyze repository structure and extract relevant context
+3. **AI Generation:** Sends the analysis to Groq's API with specialized prompts for Dockerfile generation
+4. **Smart Optimization:** The AI considers:
    - Technology stack detection
    - Dependency management
    - Security best practices
@@ -148,14 +147,7 @@ Use the "Additional instructions" field to customize generation, for example:
 
 ## 📝 License
 
-This project is licensed under the MIT License — see the [LICENSE](LICENSE) file for details.
-
-## 🙏 Acknowledgments
-
-- **[Groq](https://groq.com/)** for fast LLM inference
-- **[gitingest](https://github.com/cyclotruc/gitingest)** for repository analysis capabilities
-- **[FastAPI](https://fastapi.tiangolo.com/)** for the web framework
-- **[Monaco Editor](https://microsoft.github.io/monaco-editor/)** for code syntax highlighting
+This project is licensed under the MIT License , see the [LICENSE](LICENSE) file for details.
 
 ## 🔗 Links
 
